@@ -37,7 +37,7 @@ export function SlideLayoutWithCharacter({
       >
         <EinsteinCharacter
           pose={pose}
-          className="w-16 h-20 md:w-20 md:h-28 lg:w-24 lg:h-32 opacity-90 md:opacity-100"
+          className="w-20 h-24 md:w-24 md:h-32 lg:w-32 lg:h-40 opacity-90 md:opacity-100"
         />
       </div>
 
