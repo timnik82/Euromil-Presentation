@@ -179,7 +179,7 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
                 </div>
                 <p className="text-center text-gray-600 mt-4 text-xs md:text-sm">
                   Шанс выиграть в лотерею в <span className="font-bold text-red-600">14,000 раз меньше</span>,
-                  чем попасть под молнию!
+                    Шанс выиграть в лотерею примерно в <span className="font-bold text-red-600">140 раз меньше</span>,
                 </p>
               </div>
             )}
