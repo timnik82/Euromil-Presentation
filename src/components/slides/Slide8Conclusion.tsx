@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { EinsteinCharacter } from '../EinsteinCharacter';
+import { SlideLayoutWithCharacter } from '../SlideLayoutWithCharacter';
 import { Award, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
 
 interface Slide8ConclusionProps {
@@ -154,21 +155,14 @@ export function Slide8Conclusion({ playSound, onRestart }: Slide8ConclusionProps
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-cyan-50 to-sky-50 flex flex-col items-center justify-center p-4 md:p-6">
-      <div className="max-w-4xl w-full">
-        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 text-center mb-2">
-          Что мы узнали?
-        </h1>
-        <p className="text-base md:text-lg text-gray-600 text-center mb-6">
-          Проверим, как ты запомнил!
-        </p>
-
-        <div className="flex flex-col lg:flex-row items-start gap-6">
-          <div className="flex-shrink-0 mx-auto lg:mx-0">
-            <EinsteinCharacter pose="hero" className="w-36 h-48 md:w-44 md:h-56" />
-          </div>
-
-          <div className="flex-1">
+    <SlideLayoutWithCharacter
+      characterPosition="right"
+      pose="hero"
+      backgroundColor="bg-gradient-to-br from-teal-50 via-cyan-50 to-sky-50"
+      title="Что мы узнали?"
+      subtitle="Проверим, как ты запомнил!"
+    >
+      <div className="w-full max-w-3xl mx-auto">
             {!quizStarted ? (
               <div className="bg-white/90 backdrop-blur rounded-3xl p-6 shadow-xl text-center">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
@@ -285,9 +279,7 @@ export function Slide8Conclusion({ playSound, onRestart }: Slide8ConclusionProps
                 </div>
               </div>
             )}
-          </div>
-        </div>
       </div>
-    </div>
+    </SlideLayoutWithCharacter>
   );
 }

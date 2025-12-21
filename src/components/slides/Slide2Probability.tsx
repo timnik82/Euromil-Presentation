@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EinsteinCharacter } from '../EinsteinCharacter';
+import { SlideLayoutWithCharacter } from '../SlideLayoutWithCharacter';
 import { RotateCcw } from 'lucide-react';
 
 interface Slide2ProbabilityProps {
@@ -36,7 +36,13 @@ export function Slide2Probability({ playSound }: Slide2ProbabilityProps) {
   const total = stats.red + stats.green;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex flex-col items-center justify-center p-6">
+    <SlideLayoutWithCharacter
+      characterPosition="right"
+      pose="thinking"
+      backgroundColor="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50"
+      title="Что такое шанс?"
+      subtitle="Давай разберемся на простом примере!"
+    >
       <style>
         {`
           @keyframes shake {
@@ -58,20 +64,8 @@ export function Slide2Probability({ playSound }: Slide2ProbabilityProps) {
         `}
       </style>
 
-      <div className="max-w-4xl w-full">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-2">
-          Что такое шанс?
-        </h1>
-        <p className="text-lg text-gray-600 text-center mb-8">
-          Давай разберемся на простом примере!
-        </p>
-
-        <div className="flex flex-col lg:flex-row items-center gap-8">
-          <div className="flex-shrink-0">
-            <EinsteinCharacter pose="thinking" className="w-40 h-52 md:w-48 md:h-64" />
-          </div>
-
-          <div className="flex-1 bg-white/80 backdrop-blur rounded-3xl p-6 shadow-xl">
+      <div className="w-full max-w-3xl mx-auto">
+        <div className="bg-white/80 backdrop-blur rounded-3xl p-6 shadow-xl">
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
               Представь корзину с яблоками: <span className="text-red-500 font-bold">1 красное</span> и <span className="text-green-500 font-bold">1 зелёное</span>.
               Если закрыть глаза и достать одно, какой шанс вытащить красное?
@@ -168,7 +162,6 @@ export function Slide2Probability({ playSound }: Slide2ProbabilityProps) {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </SlideLayoutWithCharacter>
   );
 }

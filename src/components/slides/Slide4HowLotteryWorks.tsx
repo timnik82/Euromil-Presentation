@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { EinsteinCharacter } from '../EinsteinCharacter';
+import { SlideLayoutWithCharacter } from '../SlideLayoutWithCharacter';
 import { Star, RotateCcw } from 'lucide-react';
 
 interface Slide4HowLotteryWorksProps {
@@ -95,21 +95,15 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
   }, [showResult, matchedNumbers, matchedStars, playSound]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-cyan-50 flex flex-col items-center justify-center p-4 md:p-6">
-      <div className="max-w-5xl w-full">
-        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 text-center mb-2">
-          Как играют в лотерею?
-        </h1>
-        <p className="text-base md:text-lg text-gray-600 text-center mb-6">
-          Выбери 5 чисел из 50 и 2 звезды из 12!
-        </p>
-
-        <div className="flex flex-col xl:flex-row items-start gap-6">
-          <div className="flex-shrink-0 mx-auto xl:mx-0">
-            <EinsteinCharacter pose="pointing" className="w-32 h-44 md:w-40 md:h-52" />
-          </div>
-
-          <div className="flex-1 bg-white/80 backdrop-blur rounded-3xl p-4 md:p-6 shadow-xl">
+    <SlideLayoutWithCharacter
+      characterPosition="right"
+      pose="pointing"
+      backgroundColor="bg-gradient-to-br from-blue-50 via-indigo-50 to-cyan-50"
+      title="Как играют в лотерею?"
+      subtitle="Выбери 5 чисел из 50 и 2 звезды из 12!"
+    >
+      <div className="w-full max-w-4xl mx-auto">
+        <div className="bg-white/80 backdrop-blur rounded-3xl p-4 md:p-6 shadow-xl">
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-semibold text-gray-700">
@@ -272,7 +266,6 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
             )}
           </div>
         </div>
-      </div>
-    </div>
+    </SlideLayoutWithCharacter>
   );
 }
