@@ -69,22 +69,22 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 flex flex-col items-center justify-center p-4 md:p-6">
-      <div className="max-w-5xl w-full">
+    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 flex items-center justify-center p-4 md:p-8 py-20">
+      <div className="max-w-6xl w-full">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-800 text-center mb-2">
           Давай сравним!
         </h1>
-        <p className="text-base md:text-lg text-gray-600 text-center mb-6">
+        <p className="text-base md:text-lg text-gray-600 text-center mb-8">
           Нажми на карточки, чтобы узнать шансы
         </p>
 
-        <div className="flex flex-col lg:flex-row items-start gap-6">
-          <div className="flex-shrink-0 mx-auto lg:mx-0">
-            <EinsteinCharacter pose="winking" className="w-36 h-48 md:w-44 md:h-56" />
+        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
+          <div className="flex-shrink-0 hidden lg:block">
+            <EinsteinCharacter pose="winking" className="w-40 h-52" />
           </div>
 
-          <div className="flex-1">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div className="flex-1 w-full">
+            <div className="grid grid-cols-2 gap-3 md:gap-4 mb-6">
               {comparisons.map((comp) => {
                 const isFlipped = flippedCards.has(comp.id);
 
@@ -92,7 +92,7 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
                   <div
                     key={comp.id}
                     onClick={() => flipCard(comp.id)}
-                    className="perspective-1000 cursor-pointer h-48"
+                    className="perspective-1000 cursor-pointer h-40 md:h-48"
                   >
                     <div
                       className={`relative w-full h-full transition-transform duration-500 transform-style-3d ${
@@ -104,24 +104,24 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
                       }}
                     >
                       <div
-                        className={`absolute inset-0 rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg ${
+                        className={`absolute inset-0 rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center shadow-lg ${
                           comp.highlight
                             ? 'bg-gradient-to-br from-amber-100 to-orange-100 border-2 border-amber-300'
                             : 'bg-white'
                         }`}
                         style={{ backfaceVisibility: 'hidden' }}
                       >
-                        <span className="text-6xl mb-3">{comp.emoji}</span>
-                        <h4 className="font-bold text-gray-800 text-center">
+                        <span className="text-4xl md:text-6xl mb-2 md:mb-3">{comp.emoji}</span>
+                        <h4 className="font-bold text-gray-800 text-center text-sm md:text-base">
                           {comp.title}
                         </h4>
-                        <p className="text-sm text-gray-500 mt-2">
+                        <p className="text-xs md:text-sm text-gray-500 mt-1 md:mt-2">
                           Нажми, чтобы узнать шанс
                         </p>
                       </div>
 
                       <div
-                        className={`absolute inset-0 rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg ${
+                        className={`absolute inset-0 rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center shadow-lg ${
                           comp.highlight
                             ? 'bg-gradient-to-br from-amber-200 to-orange-200 border-2 border-amber-400'
                             : 'bg-gradient-to-br from-teal-50 to-cyan-50'
@@ -131,11 +131,11 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
                           transform: 'rotateY(180deg)',
                         }}
                       >
-                        <span className="text-4xl mb-2">{comp.emoji}</span>
-                        <h4 className="font-bold text-gray-800 text-center text-sm">
+                        <span className="text-3xl md:text-4xl mb-1 md:mb-2">{comp.emoji}</span>
+                        <h4 className="font-bold text-gray-800 text-center text-xs md:text-sm">
                           {comp.title}
                         </h4>
-                        <p className={`text-2xl font-bold mt-2 ${
+                        <p className={`text-lg md:text-2xl font-bold mt-1 md:mt-2 ${
                           comp.highlight ? 'text-red-600' : 'text-teal-600'
                         }`}>
                           {comp.odds}
@@ -151,16 +151,16 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
             </div>
 
             {allRevealed && (
-              <div className="bg-white/90 backdrop-blur rounded-2xl p-4 shadow-xl animate-fadeIn">
-                <h3 className="font-bold text-gray-800 mb-4 text-center">
+              <div className="bg-white/90 backdrop-blur rounded-2xl p-4 md:p-6 shadow-xl animate-fadeIn">
+                <h3 className="font-bold text-gray-800 mb-4 text-center text-sm md:text-base">
                   Сравнение шансов (логарифмическая шкала):
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 md:space-y-3">
                   {comparisons.map((comp) => (
-                    <div key={comp.id} className="flex items-center gap-3">
-                      <span className="text-2xl w-10">{comp.emoji}</span>
+                    <div key={comp.id} className="flex items-center gap-2 md:gap-3">
+                      <span className="text-xl md:text-2xl w-8 md:w-10">{comp.emoji}</span>
                       <div className="flex-1">
-                        <div className="h-6 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-5 md:h-6 bg-gray-100 rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all duration-1000 ${
                               comp.highlight
@@ -171,15 +171,15 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
                           />
                         </div>
                       </div>
-                      <span className="text-xs font-medium text-gray-600 w-28 text-right">
+                      <span className="text-xs font-medium text-gray-600 w-20 md:w-28 text-right">
                         {comp.odds}
                       </span>
                     </div>
                   ))}
                 </div>
-                <p className="text-center text-gray-600 mt-4 text-sm">
+                <p className="text-center text-gray-600 mt-4 text-xs md:text-sm">
                   Шанс выиграть в лотерею в <span className="font-bold text-red-600">14,000 раз меньше</span>,
-                  чем попасть под молнию!
+                    Шанс выиграть в лотерею примерно в <span className="font-bold text-red-600">140 раз меньше</span>,
                 </p>
               </div>
             )}
