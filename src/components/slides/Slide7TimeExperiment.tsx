@@ -87,7 +87,7 @@ export function Slide7TimeExperiment({ playSound, saveExperimentResult }: Slide7
                   Посчитать!
                 </button>
               ) : (
-                <div className="mt-4 space-y-3 animate-fadeIn">
+                <div className="mt-4 space-y-3 animate-fadeInTimeExperiment">
                   <div className="bg-gray-50 rounded-xl p-4">
                     <p className="text-gray-600">
                       Если играть каждую неделю, в среднем понадобится:
@@ -175,12 +175,12 @@ export function Slide7TimeExperiment({ playSound, saveExperimentResult }: Slide7
 
         <style>
           {`
-            @keyframes fadeIn {
+            @keyframes fadeInTimeExperiment {
               from { opacity: 0; transform: translateY(10px); }
               to { opacity: 1; transform: translateY(0); }
             }
-            .animate-fadeIn {
-              animation: fadeIn 0.5s ease-out forwards;
+            .animate-fadeInTimeExperiment {
+              animation: fadeInTimeExperiment 0.5s ease-out forwards;
             }
           `}
         </style>

@@ -144,7 +144,7 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
             </div>
 
             {allRevealed && (
-              <div className="bg-white/90 backdrop-blur rounded-2xl p-4 md:p-6 shadow-xl animate-fadeIn">
+              <div className="bg-white/90 backdrop-blur rounded-2xl p-4 md:p-6 shadow-xl animate-fadeInComparisons">
                 <h3 className="font-bold text-gray-800 mb-4 text-center text-sm md:text-base">
                   Сравнение шансов (логарифмическая шкала):
                 </h3>
@@ -171,20 +171,20 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
                   ))}
                 </div>
                 <p className="text-center text-gray-600 mt-4 text-xs md:text-sm">
-                  Шанс выиграть в лотерею в <span className="font-bold text-red-600">14,000 раз меньше</span>,
-                    Шанс выиграть в лотерею примерно в <span className="font-bold text-red-600">140 раз меньше</span>,
+                  Шанс выиграть в лотерею примерно в <span className="font-bold text-red-600">14,000 раз меньше</span> чем найти четырёхлистный клевер
+                  и примерно в <span className="font-bold text-red-600">140 раз меньше</span>, чем попасть под молнию.
                 </p>
               </div>
             )}
 
         <style>
           {`
-            @keyframes fadeIn {
+            @keyframes fadeInComparisons {
               from { opacity: 0; transform: translateY(20px); }
               to { opacity: 1; transform: translateY(0); }
             }
-            .animate-fadeIn {
-              animation: fadeIn 0.5s ease-out forwards;
+            .animate-fadeInComparisons {
+              animation: fadeInComparisons 0.5s ease-out forwards;
             }
           `}
         </style>

@@ -33,7 +33,11 @@ export function SlideLayoutWithCharacter({
       </style>
 
       <div
-        className="fixed top-5 right-5 md:top-6 md:right-6 lg:top-8 lg:right-8 z-20 transition-transform hover:scale-105 duration-300 animate-slideInFromTop"
+        className={`fixed top-5 md:top-6 lg:top-8 z-20 transition-transform hover:scale-105 duration-300 animate-slideInFromTop ${
+          characterPosition === 'left'
+            ? 'left-5 md:left-6 lg:left-8'
+            : 'right-5 md:right-6 lg:right-8'
+        }`}
       >
         <EinsteinCharacter
           pose={pose}

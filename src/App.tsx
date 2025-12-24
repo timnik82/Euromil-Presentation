@@ -17,7 +17,7 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const { soundEnabled, toggleSound, play } = useSound();
-  const { trackSlideView, markComplete, updateSoundPreference, saveExperimentResult } = useSession();
+  const { sessionId, trackSlideView, markComplete, updateSoundPreference, saveExperimentResult } = useSession();
 
   const goToSlide = useCallback((index: number) => {
     if (isTransitioning || index < 0 || index >= TOTAL_SLIDES) return;
@@ -54,8 +54,10 @@ function App() {
   }, [toggleSound, soundEnabled, updateSoundPreference]);
 
   useEffect(() => {
-    trackSlideView(0);
-  }, []);
+    if (sessionId) {
+      trackSlideView(0);
+    }
+  }, [sessionId, trackSlideView]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
