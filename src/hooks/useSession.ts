@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 
 export function useSession() {
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [slideStartTime, setSlideStartTime] = useState<number>(Date.now());
+  const slideStartTime = useRef<number>(Date.now());
 
   useEffect(() => {
     const initSession = async () => {
@@ -40,8 +40,8 @@ export function useSession() {
   const trackSlideView = useCallback(async (slideNumber: number) => {
     if (!sessionId) return;
 
-    const timeSpent = Math.floor((Date.now() - slideStartTime) / 1000);
-    setSlideStartTime(Date.now());
+    const timeSpent = Math.floor((Date.now() - slideStartTime.current) / 1000);
+    slideStartTime.current = Date.now();
 
     await supabase
       .from('slide_progress')
@@ -58,7 +58,7 @@ export function useSession() {
       .from('sessions')
       .update({ last_active_at: new Date().toISOString() })
       .eq('id', sessionId);
-  }, [sessionId, slideStartTime]);
+  }, [sessionId]);
 
   const markComplete = useCallback(async () => {
     if (!sessionId) return;
