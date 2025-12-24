@@ -55,6 +55,18 @@ export function Slide7TimeExperiment({ playSound, saveExperimentResult }: Slide7
       title="А если играть каждую неделю?"
       subtitle="Давай посчитаем, сколько времени это займёт!"
     >
+      <style>
+        {`
+          @keyframes fadeInTimeExperiment {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fadeInTimeExperiment {
+            animation: fadeInTimeExperiment 0.5s ease-out forwards;
+          }
+        `}
+      </style>
+
       <div className="w-full max-w-4xl mx-auto">
         <div className="space-y-4">
             <div className="bg-white/90 backdrop-blur rounded-2xl p-5 shadow-xl">
@@ -171,20 +183,8 @@ export function Slide7TimeExperiment({ playSound, saveExperimentResult }: Slide7
                 даже если бы они играли в лотерею каждую неделю, они бы до сих пор не выиграли!
               </p>
             </div>
-          </div>
-
-        <style>
-          {`
-            @keyframes fadeInTimeExperiment {
-              from { opacity: 0; transform: translateY(10px); }
-              to { opacity: 1; transform: translateY(0); }
-            }
-            .animate-fadeInTimeExperiment {
-              animation: fadeInTimeExperiment 0.5s ease-out forwards;
-            }
-          `}
-        </style>
         </div>
+      </div>
     </SlideLayoutWithCharacter>
   );
 }

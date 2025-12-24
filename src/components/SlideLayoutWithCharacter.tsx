@@ -20,18 +20,6 @@ export function SlideLayoutWithCharacter({
 }: SlideLayoutWithCharacterProps) {
   return (
     <div className={`min-h-screen ${backgroundColor} flex flex-col items-center justify-center p-4 md:p-6 relative overflow-hidden`}>
-      <style>
-        {`
-          @keyframes slideInFromTop {
-            from { transform: translateY(-120%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-          }
-          .animate-slideInFromTop {
-            animation: slideInFromTop 0.5s ease-out forwards;
-          }
-        `}
-      </style>
-
       <div
         className={`fixed top-5 md:top-6 lg:top-8 z-20 transition-transform hover:scale-105 duration-300 animate-slideInFromTop ${
           characterPosition === 'left'

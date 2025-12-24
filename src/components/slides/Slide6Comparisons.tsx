@@ -76,6 +76,18 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
       title="Давай сравним!"
       subtitle="Нажми на карточки, чтобы узнать шансы"
     >
+      <style>
+        {`
+          @keyframes fadeInComparisons {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fadeInComparisons {
+            animation: fadeInComparisons 0.5s ease-out forwards;
+          }
+        `}
+      </style>
+
       <div className="w-full max-w-5xl mx-auto">
             <div className="grid grid-cols-2 gap-3 md:gap-4 mb-6">
               {comparisons.map((comp) => {
@@ -176,18 +188,6 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
                 </p>
               </div>
             )}
-
-        <style>
-          {`
-            @keyframes fadeInComparisons {
-              from { opacity: 0; transform: translateY(20px); }
-              to { opacity: 1; transform: translateY(0); }
-            }
-            .animate-fadeInComparisons {
-              animation: fadeInComparisons 0.5s ease-out forwards;
-            }
-          `}
-        </style>
       </div>
     </SlideLayoutWithCharacter>
   );
