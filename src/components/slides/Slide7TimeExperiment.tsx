@@ -4,6 +4,7 @@ import { Calendar } from 'lucide-react';
 
 interface Slide7TimeExperimentProps {
   playSound: (name: string) => void;
+  saveExperimentResult: (age: number, yearsNeeded: number, generationsNeeded: number) => void;
 }
 
 const timeline = [
@@ -15,7 +16,7 @@ const timeline = [
   { year: 2700000, label: 'Возможный выигрыш', emoji: '🎰' },
 ];
 
-export function Slide7TimeExperiment({ playSound }: Slide7TimeExperimentProps) {
+export function Slide7TimeExperiment({ playSound, saveExperimentResult }: Slide7TimeExperimentProps) {
   const [age, setAge] = useState(9);
   const [showCalculation, setShowCalculation] = useState(false);
   const [tickCount, setTickCount] = useState(0);
@@ -43,6 +44,7 @@ export function Slide7TimeExperiment({ playSound }: Slide7TimeExperimentProps) {
   const handleCalculate = () => {
     playSound('playSurprise');
     setShowCalculation(true);
+    saveExperimentResult(age, yearsNeeded, generationsNeeded);
   };
 
   return (
