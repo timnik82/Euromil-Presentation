@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# GitHub PR Comments Fetcher
-# This script fetches PR comments using the GitHub REST API
+# GitHub PR Feedback Fetcher
+# This script fetches complete PR feedback using the GitHub REST API
+# Fetches three types of feedback:
+#   1. PR Details (metadata, stats, description)
+#   2. General Comments (PR-level comments)
+#   3. Review Comments (line-specific code review comments)
 #
 # Required Environment Variables:
 #   GITHUB_TOKEN - GitHub Personal Access Token
@@ -9,8 +13,8 @@
 #   GITHUB_API_BASE - GitHub API base URL (default: https://api.github.com)
 #
 # Usage:
-#   ./fetch-pr-comments.sh <PR_NUMBER>
-#   ./fetch-pr-comments.sh current           # Fetch comments for PR of current branch
+#   ./fetch-pr-comments.sh <PR_NUMBER>       # Fetch all feedback for specific PR
+#   ./fetch-pr-comments.sh current           # Fetch all feedback for PR of current branch
 #   ./fetch-pr-comments.sh list              # List recent PRs
 #   ./fetch-pr-comments.sh search <text>     # Search PRs by branch name (client-side)
 #   ./fetch-pr-comments.sh api-search <text> # Search PRs using GitHub Search API (server-side)
@@ -183,14 +187,47 @@ except Exception as e:
 "
 }
 
-# Function to fetch PR comments (both general and review comments)
+# Function to fetch all PR feedback (details, general comments, and review comments)
 fetch_pr_comments() {
     local pr_number="$1"
 
-    echo "=== Fetching comments for PR #$pr_number ==="
+    echo "=== Fetching all feedback for PR #$pr_number ==="
     echo ""
 
-    # Get general PR/issue comments
+    # Get PR details/metadata
+    echo "PR Details:"
+    echo "-----------"
+    curl -s -L "${HEADERS[@]}" \
+        "$GITHUB_API_BASE/repos/$GITHUB_REPO/pulls/$pr_number" \
+        | python3 -c "
+import json, sys
+try:
+    pr = json.load(sys.stdin)
+    if 'number' in pr:
+        print(f\"PR #{pr['number']}: {pr['title']}\")
+        print(f\"State: {pr['state']}\")
+        print(f\"Author: @{pr['user']['login']}\")
+        print(f\"Created: {pr['created_at']}\")
+        print(f\"Updated: {pr['updated_at']}\")
+        print(f\"Branch: {pr['head']['ref']} → {pr['base']['ref']}\")
+        print(f\"URL: {pr['html_url']}\")
+        print(f\"\nDescription:\")
+        print(pr['body'] or '(no description)')
+        print(f\"\nStats:\")
+        print(f\"  Commits: {pr['commits']}\")
+        print(f\"  Changed files: {pr['changed_files']}\")
+        print(f\"  Additions: +{pr['additions']}\")
+        print(f\"  Deletions: -{pr['deletions']}\")
+    else:
+        print(f\"Error: {pr.get('message', 'Unknown error')}\")
+        sys.exit(1)
+except Exception as e:
+    print(f'Error: {e}', file=sys.stderr)
+    sys.exit(1)
+"
+
+    echo ""
+    echo ""
     echo "General Comments:"
     echo "----------------"
     curl -s -L "${HEADERS[@]}" \
@@ -267,7 +304,7 @@ case "${1:-}" in
         search_prs_api "$2"
         ;;
     current)
-        # Fetch comments for PR associated with current branch
+        # Fetch all feedback for PR associated with current branch
         PR_NUMBER=$(get_current_pr)
         fetch_pr_comments "$PR_NUMBER"
         ;;
@@ -278,8 +315,10 @@ case "${1:-}" in
         echo "  list                  - List 20 most recent pull requests"
         echo "  search <text>         - Search PRs by branch name (first 100 PRs only)"
         echo "  api-search <text>     - Search PRs using GitHub Search API (comprehensive)"
-        echo "  current               - Fetch comments for PR of current branch"
-        echo "  <PR_NUMBER>           - Fetch comments for specific PR"
+        echo "  current               - Fetch all feedback for PR of current branch"
+        echo "  <PR_NUMBER>           - Fetch all feedback for specific PR"
+        echo ""
+        echo "Feedback includes: PR details, general comments, and line-specific review comments"
         echo ""
         echo "Examples:"
         echo "  $0 list"
