@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EinsteinCharacter } from '../EinsteinCharacter';
+import { SlideLayoutWithCharacter } from '../SlideLayoutWithCharacter';
 import { Users, Building, Waves } from 'lucide-react';
 
 interface Slide5BigNumbersProps {
@@ -69,21 +69,15 @@ export function Slide5BigNumbers({ playSound }: Slide5BigNumbersProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-orange-50 flex flex-col items-center justify-center p-4 md:p-6">
-      <div className="max-w-5xl w-full">
-        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 text-center mb-2">
-          Насколько это много?
-        </h1>
-        <p className="text-base md:text-lg text-gray-600 text-center mb-6">
-          Шанс выиграть - 1 из 139,838,160. Но что это значит?
-        </p>
-
-        <div className="flex flex-col lg:flex-row items-start gap-6">
-          <div className="flex-shrink-0 mx-auto lg:mx-0">
-            <EinsteinCharacter pose="excited" className="w-36 h-48 md:w-44 md:h-56" />
-          </div>
-
-          <div className="flex-1 space-y-4">
+    <SlideLayoutWithCharacter
+      characterPosition="left"
+      pose="excited"
+      backgroundColor="bg-gradient-to-br from-rose-50 via-pink-50 to-orange-50"
+      title="Насколько это много?"
+      subtitle="Шанс выиграть - 1 из 139,838,160. Но что это значит?"
+    >
+      <div className="w-full max-w-4xl mx-auto">
+        <div className="space-y-4">
             <div
               className="bg-white/90 backdrop-blur rounded-3xl p-6 shadow-xl cursor-pointer hover:shadow-2xl transition-all"
               onClick={startCounter}
@@ -141,7 +135,6 @@ export function Slide5BigNumbers({ playSound }: Slide5BigNumbersProps) {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </SlideLayoutWithCharacter>
   );
 }

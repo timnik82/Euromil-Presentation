@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSound } from './hooks/useSound';
+import { useSession } from './hooks/useSession';
 import { SlideNavigation } from './components/SlideNavigation';
 import { Slide1Welcome } from './components/slides/Slide1Welcome';
 import { Slide2Probability } from './components/slides/Slide2Probability';
@@ -16,6 +17,7 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const { soundEnabled, toggleSound, play } = useSound();
+  const { sessionId, trackSlideView, markComplete, updateSoundPreference, saveExperimentResult } = useSession();
 
   const goToSlide = useCallback((index: number) => {
     if (isTransitioning || index < 0 || index >= TOTAL_SLIDES) return;
@@ -26,8 +28,13 @@ function App() {
     setTimeout(() => {
       setCurrentSlide(index);
       setIsTransitioning(false);
+      trackSlideView(index);
+
+      if (index === TOTAL_SLIDES - 1) {
+        markComplete();
+      }
     }, 300);
-  }, [isTransitioning, play]);
+  }, [isTransitioning, play, trackSlideView, markComplete]);
 
   const goNext = useCallback(() => {
     goToSlide(currentSlide + 1);
@@ -40,6 +47,17 @@ function App() {
   const restart = useCallback(() => {
     goToSlide(0);
   }, [goToSlide]);
+
+  const handleToggleSound = useCallback(() => {
+    toggleSound();
+    updateSoundPreference(!soundEnabled);
+  }, [toggleSound, soundEnabled, updateSoundPreference]);
+
+  useEffect(() => {
+    if (sessionId) {
+      trackSlideView(0);
+    }
+  }, [sessionId, trackSlideView]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -73,7 +91,7 @@ function App() {
       case 5:
         return <Slide6Comparisons playSound={playSound} />;
       case 6:
-        return <Slide7TimeExperiment playSound={playSound} />;
+        return <Slide7TimeExperiment playSound={playSound} saveExperimentResult={saveExperimentResult} />;
       case 7:
         return <Slide8Conclusion playSound={playSound} onRestart={restart} />;
       default:
@@ -89,7 +107,7 @@ function App() {
         onPrev={goPrev}
         onNext={goNext}
         soundEnabled={soundEnabled}
-        onToggleSound={toggleSound}
+        onToggleSound={handleToggleSound}
         showNav={currentSlide > 0}
       />
 

@@ -23,7 +23,7 @@ export function SlideNavigation({
     <>
       <button
         onClick={onToggleSound}
-        className="fixed top-4 right-4 z-50 p-3 bg-white/90 backdrop-blur rounded-full shadow-lg hover:bg-white transition-all hover:scale-110"
+        className="fixed top-4 left-4 md:top-6 md:left-6 z-50 p-3 bg-white/90 backdrop-blur rounded-full shadow-lg hover:bg-white transition-all hover:scale-110"
         aria-label={soundEnabled ? 'Выключить звук' : 'Включить звук'}
       >
         {soundEnabled ? (

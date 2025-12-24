@@ -1,6 +1,16 @@
 # GitHub API Guide for AI Assistants
 
-This guide documents how to fetch GitHub PR comments using the GitHub REST API. It's designed to be repository-agnostic and can be copied to any project.
+This guide documents how to fetch complete GitHub PR feedback using the GitHub REST API. It's designed to be repository-agnostic and can be copied to any project.
+
+## Three Types of PR Feedback
+
+When reviewing a PR, you should always fetch **all three types** of feedback:
+
+1. **PR Details** - Metadata, stats, description, author, branch info
+2. **General Comments** - PR-level comments (not tied to specific code lines)
+3. **Review Comments** - Line-specific code review comments
+
+The helper script automatically fetches all three types.
 
 ## Environment Variables
 
@@ -14,21 +24,26 @@ The following environment variables should be configured:
 
 ### Using the Helper Script
 
+The helper script automatically fetches all three types of PR feedback: details, general comments, and review comments.
+
 ```bash
 # Make script executable (first time only)
-chmod +x scripts/fetch-pr-comments.sh
+chmod +x fetch-pr-comments.sh
 
 # List 20 most recent PRs
-./scripts/fetch-pr-comments.sh list
+./fetch-pr-comments.sh list
 
 # Search for PRs by branch name (client-side, first 100 PRs)
-./scripts/fetch-pr-comments.sh search "feature-branch"
+./fetch-pr-comments.sh search "feature-branch"
 
 # Search using GitHub Search API (server-side, comprehensive)
-./scripts/fetch-pr-comments.sh api-search "feature-branch"
+./fetch-pr-comments.sh api-search "feature-branch"
 
-# Fetch all comments for specific PR
-./scripts/fetch-pr-comments.sh 68
+# Fetch all three types of feedback for specific PR
+./fetch-pr-comments.sh 68
+
+# Fetch all feedback for PR of current branch
+./fetch-pr-comments.sh current
 ```
 
 ### Direct API Calls
@@ -124,11 +139,25 @@ Example complex query:
 QUERY="repo:$GITHUB_REPO is:pr is:open feature in:branch"
 ```
 
-### 4. Get PR Comments
+### 4. Get Complete PR Feedback
 
-There are **two types** of PR comments:
+To get complete PR feedback, you need to fetch **three types** of information:
 
-#### A. General PR Comments (Issue Comments)
+#### A. PR Details
+
+Get the PR metadata, stats, description, and other details.
+
+```bash
+PR_NUMBER=123
+
+curl -s -L \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer $GITHUB_TOKEN" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  "$GITHUB_API_BASE/repos/$GITHUB_REPO/pulls/$PR_NUMBER"
+```
+
+#### B. General PR Comments (Issue Comments)
 
 These are comments on the PR as a whole, not tied to specific code lines.
 
@@ -144,7 +173,7 @@ curl -s -L \
 
 **Important**: Uses `/issues/` endpoint, not `/pulls/`
 
-#### B. Code Review Comments (Line-Specific)
+#### C. Code Review Comments (Line-Specific)
 
 These are comments on specific lines of code in the PR diff.
 
@@ -158,19 +187,7 @@ curl -s -L \
   "$GITHUB_API_BASE/repos/$GITHUB_REPO/pulls/$PR_NUMBER/comments"
 ```
 
-### 5. Get PR Details
-
-```bash
-PR_NUMBER=123
-
-curl -s -L \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer $GITHUB_TOKEN" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  "$GITHUB_API_BASE/repos/$GITHUB_REPO/pulls/$PR_NUMBER"
-```
-
-## Complete Example: Fetch All PR Information
+## Complete Example: Fetch All Three Types of PR Feedback
 
 ```bash
 PR_NUMBER=123
@@ -378,12 +395,16 @@ curl -s -L \
 
 ## Quick Reference for AI Assistants
 
-When asked to fetch PR comments:
+When asked to fetch PR feedback:
 
-1. **Read this file first**: `scripts/GITHUB_API_GUIDE.md`
-2. **Use the helper script**: `scripts/fetch-pr-comments.sh current` (for current branch) or `scripts/fetch-pr-comments.sh <PR_NUMBER>`
-3. **Use Bearer token**: Always use `Authorization: Bearer $GITHUB_TOKEN`
-4. **Fetch both types**: General comments (`/issues/`) AND review comments (`/pulls/`)
+1. **Read this file first**: `GITHUB_API_GUIDE.md`
+2. **Use the helper script**: `./fetch-pr-comments.sh <PR_NUMBER>` or `./fetch-pr-comments.sh current`
+   - The script automatically fetches **all three types** of feedback
+3. **Three types of feedback** (all required):
+   - PR Details: `/repos/$GITHUB_REPO/pulls/$PR_NUMBER`
+   - General Comments: `/repos/$GITHUB_REPO/issues/$PR_NUMBER/comments`
+   - Review Comments: `/repos/$GITHUB_REPO/pulls/$PR_NUMBER/comments`
+4. **Use Bearer token**: Always use `Authorization: Bearer $GITHUB_TOKEN`
 5. **For searches**: Use `api-search` command for comprehensive results
 6. **Parse with Python**: Use `python3 -m json.tool` or custom Python for formatting
 7. **Security**: Pass user input as command-line arguments, not string interpolation

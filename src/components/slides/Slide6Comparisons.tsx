@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EinsteinCharacter } from '../EinsteinCharacter';
+import { SlideLayoutWithCharacter } from '../SlideLayoutWithCharacter';
 
 interface Slide6ComparisonsProps {
   playSound: (name: string) => void;
@@ -69,21 +69,26 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 flex items-center justify-center p-4 md:p-8 py-20">
-      <div className="max-w-6xl w-full">
-        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 text-center mb-2">
-          Давай сравним!
-        </h1>
-        <p className="text-base md:text-lg text-gray-600 text-center mb-8">
-          Нажми на карточки, чтобы узнать шансы
-        </p>
+    <SlideLayoutWithCharacter
+      characterPosition="right"
+      pose="winking"
+      backgroundColor="bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50"
+      title="Давай сравним!"
+      subtitle="Нажми на карточки, чтобы узнать шансы"
+    >
+      <style>
+        {`
+          @keyframes fadeInComparisons {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fadeInComparisons {
+            animation: fadeInComparisons 0.5s ease-out forwards;
+          }
+        `}
+      </style>
 
-        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
-          <div className="flex-shrink-0 hidden lg:block">
-            <EinsteinCharacter pose="winking" className="w-40 h-52" />
-          </div>
-
-          <div className="flex-1 w-full">
+      <div className="w-full max-w-5xl mx-auto">
             <div className="grid grid-cols-2 gap-3 md:gap-4 mb-6">
               {comparisons.map((comp) => {
                 const isFlipped = flippedCards.has(comp.id);
@@ -151,7 +156,7 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
             </div>
 
             {allRevealed && (
-              <div className="bg-white/90 backdrop-blur rounded-2xl p-4 md:p-6 shadow-xl animate-fadeIn">
+              <div className="bg-white/90 backdrop-blur rounded-2xl p-4 md:p-6 shadow-xl animate-fadeInComparisons">
                 <h3 className="font-bold text-gray-800 mb-4 text-center text-sm md:text-base">
                   Сравнение шансов (логарифмическая шкала):
                 </h3>
@@ -178,26 +183,12 @@ export function Slide6Comparisons({ playSound }: Slide6ComparisonsProps) {
                   ))}
                 </div>
                 <p className="text-center text-gray-600 mt-4 text-xs md:text-sm">
-                  Шанс выиграть в лотерею в <span className="font-bold text-red-600">14,000 раз меньше</span>,
-                    Шанс выиграть в лотерею примерно в <span className="font-bold text-red-600">140 раз меньше</span>,
+                  Шанс выиграть в лотерею примерно в <span className="font-bold text-red-600">14,000 раз меньше</span> чем найти четырёхлистный клевер
+                  и примерно в <span className="font-bold text-red-600">140 раз меньше</span>, чем попасть под молнию.
                 </p>
               </div>
             )}
-          </div>
-        </div>
       </div>
-
-      <style>
-        {`
-          @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          .animate-fadeIn {
-            animation: fadeIn 0.5s ease-out forwards;
-          }
-        `}
-      </style>
-    </div>
+    </SlideLayoutWithCharacter>
   );
 }

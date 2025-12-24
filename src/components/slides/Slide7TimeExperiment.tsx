@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { EinsteinCharacter } from '../EinsteinCharacter';
+import { SlideLayoutWithCharacter } from '../SlideLayoutWithCharacter';
 import { Calendar } from 'lucide-react';
 
 interface Slide7TimeExperimentProps {
   playSound: (name: string) => void;
+  saveExperimentResult: (age: number, yearsNeeded: number, generationsNeeded: number) => void;
 }
 
 const timeline = [
@@ -15,7 +16,7 @@ const timeline = [
   { year: 2700000, label: 'Возможный выигрыш', emoji: '🎰' },
 ];
 
-export function Slide7TimeExperiment({ playSound }: Slide7TimeExperimentProps) {
+export function Slide7TimeExperiment({ playSound, saveExperimentResult }: Slide7TimeExperimentProps) {
   const [age, setAge] = useState(9);
   const [showCalculation, setShowCalculation] = useState(false);
   const [tickCount, setTickCount] = useState(0);
@@ -43,24 +44,31 @@ export function Slide7TimeExperiment({ playSound }: Slide7TimeExperimentProps) {
   const handleCalculate = () => {
     playSound('playSurprise');
     setShowCalculation(true);
+    saveExperimentResult(age, yearsNeeded, generationsNeeded);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-100 flex flex-col items-center justify-center p-4 md:p-6">
-      <div className="max-w-5xl w-full">
-        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 text-center mb-2">
-          А если играть каждую неделю?
-        </h1>
-        <p className="text-base md:text-lg text-gray-600 text-center mb-6">
-          Давай посчитаем, сколько времени это займёт!
-        </p>
+    <SlideLayoutWithCharacter
+      characterPosition="left"
+      pose="watching"
+      backgroundColor="bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-100"
+      title="А если играть каждую неделю?"
+      subtitle="Давай посчитаем, сколько времени это займёт!"
+    >
+      <style>
+        {`
+          @keyframes fadeInTimeExperiment {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fadeInTimeExperiment {
+            animation: fadeInTimeExperiment 0.5s ease-out forwards;
+          }
+        `}
+      </style>
 
-        <div className="flex flex-col lg:flex-row items-start gap-6">
-          <div className="flex-shrink-0 mx-auto lg:mx-0">
-            <EinsteinCharacter pose="watching" className="w-36 h-48 md:w-44 md:h-56" />
-          </div>
-
-          <div className="flex-1 space-y-4">
+      <div className="w-full max-w-4xl mx-auto">
+        <div className="space-y-4">
             <div className="bg-white/90 backdrop-blur rounded-2xl p-5 shadow-xl">
               <h3 className="font-semibold text-gray-700 mb-4 flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-teal-500" />
@@ -91,7 +99,7 @@ export function Slide7TimeExperiment({ playSound }: Slide7TimeExperimentProps) {
                   Посчитать!
                 </button>
               ) : (
-                <div className="mt-4 space-y-3 animate-fadeIn">
+                <div className="mt-4 space-y-3 animate-fadeInTimeExperiment">
                   <div className="bg-gray-50 rounded-xl p-4">
                     <p className="text-gray-600">
                       Если играть каждую неделю, в среднем понадобится:
@@ -175,21 +183,8 @@ export function Slide7TimeExperiment({ playSound }: Slide7TimeExperimentProps) {
                 даже если бы они играли в лотерею каждую неделю, они бы до сих пор не выиграли!
               </p>
             </div>
-          </div>
         </div>
       </div>
-
-      <style>
-        {`
-          @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          .animate-fadeIn {
-            animation: fadeIn 0.5s ease-out forwards;
-          }
-        `}
-      </style>
-    </div>
+    </SlideLayoutWithCharacter>
   );
 }

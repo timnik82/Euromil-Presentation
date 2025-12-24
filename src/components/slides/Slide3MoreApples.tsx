@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { EinsteinCharacter } from '../EinsteinCharacter';
+import { SlideLayoutWithCharacter } from '../SlideLayoutWithCharacter';
 
 interface Slide3MoreApplesProps {
   playSound: (name: string) => void;
@@ -42,21 +42,15 @@ export function Slide3MoreApples({ playSound }: Slide3MoreApplesProps) {
   }, [appleCount]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex flex-col items-center justify-center p-6">
-      <div className="max-w-4xl w-full">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-2">
-          А если яблок больше?
-        </h1>
-        <p className="text-lg text-gray-600 text-center mb-8">
-          Чем больше яблок, тем труднее найти красное!
-        </p>
-
-        <div className="flex flex-col lg:flex-row items-center gap-8">
-          <div className="flex-shrink-0">
-            <EinsteinCharacter pose="surprised" className="w-40 h-52 md:w-48 md:h-64" />
-          </div>
-
-          <div className="flex-1 bg-white/80 backdrop-blur rounded-3xl p-6 shadow-xl">
+    <SlideLayoutWithCharacter
+      characterPosition="left"
+      pose="surprised"
+      backgroundColor="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50"
+      title="А если яблок больше?"
+      subtitle="Чем больше яблок, тем труднее найти красное!"
+    >
+      <div className="w-full max-w-3xl mx-auto">
+        <div className="bg-white/80 backdrop-blur rounded-3xl p-6 shadow-xl">
             <div className="mb-6">
               <label className="block text-lg font-semibold text-gray-700 mb-3">
                 Сколько яблок в корзине?
@@ -143,7 +137,6 @@ export function Slide3MoreApples({ playSound }: Slide3MoreApplesProps) {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </SlideLayoutWithCharacter>
   );
 }
