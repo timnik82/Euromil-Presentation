@@ -61,8 +61,7 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
     let index = 0;
     const interval = setInterval(() => {
       if (index < 5) {
-        drawnNumbersTemp.push(randomNumbers[index]);
-        setDrawnNumbers([...drawnNumbersTemp]);
+        setDrawnNumbers(prev => [...prev, randomNumbers[index]]);
         playSound('playPop');
       } else if (index < 7) {
         drawnStarsTemp.push(randomStars[index - 5]);
