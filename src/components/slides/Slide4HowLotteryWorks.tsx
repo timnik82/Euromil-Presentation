@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SlideLayoutWithCharacter } from '../SlideLayoutWithCharacter';
 import { Star, RotateCcw } from 'lucide-react';
 
@@ -14,6 +14,10 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
   const [isDrawing, setIsDrawing] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [drawIntervalId, setDrawIntervalId] = useState<NodeJS.Timeout | null>(null);
+
+  const generatedNumbersRef = useRef<number[]>([]);
+  const generatedStarsRef = useRef<number[]>([]);
+  const animationIndexRef = useRef<number>(0);
 
   const isGridDisabled = isDrawing || showResult;
 
@@ -58,25 +62,28 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
       if (!randomStars.includes(num)) randomStars.push(num);
     }
 
-    const drawnNumbersTemp: number[] = [];
-    const drawnStarsTemp: number[] = [];
+    generatedNumbersRef.current = randomNumbers;
+    generatedStarsRef.current = randomStars;
+    animationIndexRef.current = 0;
 
-    let index = 0;
     const intervalId = setInterval(() => {
-      if (index < 5) {
-        setDrawnNumbers(prev => [...prev, randomNumbers[index]]);
+      const currentIndex = animationIndexRef.current;
+
+      if (currentIndex < 5) {
+        setDrawnNumbers(generatedNumbersRef.current.slice(0, currentIndex + 1));
         playSound('playPop');
-      } else if (index < 7) {
-        drawnStarsTemp.push(randomStars[index - 5]);
-        setDrawnStars([...drawnStarsTemp]);
+      } else if (currentIndex < 7) {
+        setDrawnStars(generatedStarsRef.current.slice(0, currentIndex - 4));
         playSound('playPop');
       } else {
         clearInterval(intervalId);
         setDrawIntervalId(null);
         setIsDrawing(false);
         setShowResult(true);
+        return;
       }
-      index++;
+
+      animationIndexRef.current = currentIndex + 1;
     }, 400);
 
     setDrawIntervalId(intervalId);
