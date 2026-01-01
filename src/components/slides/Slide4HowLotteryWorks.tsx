@@ -87,7 +87,7 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
 
   const matchedNumbers = selectedNumbers.filter(n => drawnNumbers.includes(n)).length;
   const matchedStars = selectedStars.filter(n => drawnStars.includes(n)).length;
-  const isStartDisabled = selectedNumbers.length !== 5 || selectedStars.length !== 2;
+  const isStartDisabled = selectedNumbers.length !== 5 || selectedStars.length !== 2 || isDrawing;
 
   useEffect(() => {
     if (showResult) {
