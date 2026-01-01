@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SlideLayoutWithCharacter } from '../SlideLayoutWithCharacter';
 import { Calculator, Star } from 'lucide-react';
 
@@ -14,6 +14,19 @@ export function Slide4bCalculation({ playSound }: Slide4bCalculationProps) {
   const [finalCalculated, setFinalCalculated] = useState(false);
   const [finalValue, setFinalValue] = useState<number | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const animateNumber = (
     target: number,
@@ -31,13 +44,16 @@ export function Slide4bCalculation({ playSound }: Slide4bCalculationProps) {
     ];
 
     let stepIndex = 0;
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setter(steps[stepIndex]);
       playSound('playClick');
       stepIndex++;
 
       if (stepIndex >= steps.length) {
-        clearInterval(interval);
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
         setIsAnimating(false);
         onComplete();
       }
@@ -48,7 +64,8 @@ export function Slide4bCalculation({ playSound }: Slide4bCalculationProps) {
     if (numbersCalculated || isAnimating) return;
     playSound('playDrumroll');
 
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = null;
       animateNumber(2118760, setNumbersValue, () => {
         setNumbersCalculated(true);
         playSound('playSuccess');
@@ -70,7 +87,8 @@ export function Slide4bCalculation({ playSound }: Slide4bCalculationProps) {
     if (finalCalculated || isAnimating || !starsCalculated) return;
     playSound('playDrumroll');
 
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = null;
       animateNumber(139838160, setFinalValue, () => {
         setFinalCalculated(true);
         playSound('playFanfare');
@@ -80,6 +98,17 @@ export function Slide4bCalculation({ playSound }: Slide4bCalculationProps) {
 
   const reset = () => {
     playSound('playClick');
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
+    setIsAnimating(false);
     setNumbersCalculated(false);
     setNumbersValue(null);
     setStarsCalculated(false);

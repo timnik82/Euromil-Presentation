@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SlideLayoutWithCharacter } from '../SlideLayoutWithCharacter';
 
 interface Slide4aCombinatoricsProps {
@@ -22,6 +22,19 @@ export function Slide4aCombinatorics({ playSound }: Slide4aCombinatoricsProps) {
   const [showPairs, setShowPairs] = useState(false);
   const [visiblePairs, setVisiblePairs] = useState<number>(0);
   const [showConclusion, setShowConclusion] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleShowPairs = () => {
     if (showPairs) return;
@@ -29,16 +42,20 @@ export function Slide4aCombinatorics({ playSound }: Slide4aCombinatoricsProps) {
     playSound('playClick');
 
     let pairIndex = 0;
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       pairIndex++;
       setVisiblePairs(pairIndex);
       playSound('playPop');
 
       if (pairIndex >= allPairs.length) {
-        clearInterval(interval);
-        setTimeout(() => {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+        timeoutRef.current = setTimeout(() => {
           setShowConclusion(true);
           playSound('playSurprise');
+          timeoutRef.current = null;
         }, 500);
       }
     }, 400);
@@ -46,6 +63,16 @@ export function Slide4aCombinatorics({ playSound }: Slide4aCombinatoricsProps) {
 
   const reset = () => {
     playSound('playClick');
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
     setShowPairs(false);
     setVisiblePairs(0);
     setShowConclusion(false);
@@ -98,9 +125,6 @@ export function Slide4aCombinatorics({ playSound }: Slide4aCombinatoricsProps) {
                   <div
                     key={index}
                     className="flex items-center justify-center gap-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-4 shadow-md animate-bounce-in"
-                    style={{
-                      animation: 'bounceIn 0.4s ease-out',
-                    }}
                   >
                     <div
                       className={`w-12 h-12 rounded-full ${fruits[pair[0]].color} flex items-center justify-center text-2xl shadow`}
@@ -155,25 +179,6 @@ export function Slide4aCombinatorics({ playSound }: Slide4aCombinatoricsProps) {
           )}
         </div>
       </div>
-
-      <style>{`
-        @keyframes bounceIn {
-          0% {
-            opacity: 0;
-            transform: scale(0.3);
-          }
-          50% {
-            transform: scale(1.05);
-          }
-          70% {
-            transform: scale(0.9);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-      `}</style>
     </SlideLayoutWithCharacter>
   );
 }
