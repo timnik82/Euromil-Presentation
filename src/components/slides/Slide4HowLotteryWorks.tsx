@@ -15,7 +15,7 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
   const [showResult, setShowResult] = useState(false);
 
   const toggleNumber = (num: number) => {
-    if (isDrawing) return;
+    if (isDrawing || showResult) return;
     playSound('playClick');
     if (selectedNumbers.includes(num)) {
       setSelectedNumbers(prev => prev.filter(n => n !== num));
@@ -25,7 +25,7 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
   };
 
   const toggleStar = (num: number) => {
-    if (isDrawing) return;
+    if (isDrawing || showResult) return;
     playSound('playClick');
     if (selectedStars.includes(num)) {
       setSelectedStars(prev => prev.filter(n => n !== num));
@@ -130,7 +130,7 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
                     <button
                       key={num}
                       onClick={() => toggleNumber(num)}
-                      disabled={isDrawing}
+                      disabled={isDrawing || showResult}
                       className={`w-7 h-7 md:w-9 md:h-9 rounded-full text-xs md:text-sm font-bold transition-all ${
                         isMatch
                           ? 'bg-green-500 text-white ring-2 ring-green-300 scale-110'
@@ -168,7 +168,7 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
                     <button
                       key={num}
                       onClick={() => toggleStar(num)}
-                      disabled={isDrawing}
+                      disabled={isDrawing || showResult}
                       className={`w-10 h-10 md:w-12 md:h-12 rounded-full text-sm font-bold transition-all flex items-center justify-center ${
                         isMatch
                           ? 'bg-green-500 text-white ring-2 ring-green-300 scale-110'
