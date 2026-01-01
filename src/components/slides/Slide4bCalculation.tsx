@@ -62,6 +62,8 @@ export function Slide4bCalculation({ playSound }: Slide4bCalculationProps) {
 
   const calculateNumbers = () => {
     if (numbersCalculated || isAnimating) return;
+
+    setIsAnimating(true);
     playSound('playDrumroll');
 
     timeoutRef.current = setTimeout(() => {
@@ -85,6 +87,8 @@ export function Slide4bCalculation({ playSound }: Slide4bCalculationProps) {
 
   const calculateFinal = () => {
     if (finalCalculated || isAnimating || !starsCalculated) return;
+
+    setIsAnimating(true);
     playSound('playDrumroll');
 
     timeoutRef.current = setTimeout(() => {
