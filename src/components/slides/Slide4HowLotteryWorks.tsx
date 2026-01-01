@@ -173,10 +173,10 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
                         isMatch
                           ? 'bg-green-500 text-white ring-2 ring-green-300 scale-110'
                           : isSelected
-                          ? 'bg-amber-500 text-white shadow-md scale-105'
+                          ? 'bg-teal-500 text-white shadow-md scale-105'
                           : isDrawn && showResult
                           ? 'bg-orange-400 text-white'
-                          : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
                       <Star className={`w-4 h-4 ${isSelected || (isDrawn && showResult) ? 'fill-current' : ''}`} />
