@@ -266,7 +266,7 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
                       {num}
                     </div>
                   ))}
-                  {!isDrawing && drawnNumbers.length === 5 && Array.from({ length: 2 - drawnStars.length }).map((_, i) => (
+                  {drawnNumbers.length === 5 && Array.from({ length: 2 - drawnStars.length }).map((_, i) => (
                     <div
                       key={`empty-star-${i}`}
                       className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-amber-200 animate-pulse"
