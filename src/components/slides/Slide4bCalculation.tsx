@@ -77,6 +77,8 @@ export function Slide4bCalculation({ playSound }: Slide4bCalculationProps) {
 
   const calculateStars = () => {
     if (starsCalculated || isAnimating || !numbersCalculated) return;
+
+    setIsAnimating(true);
     playSound('playClick');
 
     animateNumber(66, setStarsValue, () => {
