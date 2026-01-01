@@ -6,12 +6,14 @@ import { Slide1Welcome } from './components/slides/Slide1Welcome';
 import { Slide2Probability } from './components/slides/Slide2Probability';
 import { Slide3MoreApples } from './components/slides/Slide3MoreApples';
 import { Slide4HowLotteryWorks } from './components/slides/Slide4HowLotteryWorks';
+import { Slide4aCombinatorics } from './components/slides/Slide4aCombinatorics';
+import { Slide4bCalculation } from './components/slides/Slide4bCalculation';
 import { Slide5BigNumbers } from './components/slides/Slide5BigNumbers';
 import { Slide6Comparisons } from './components/slides/Slide6Comparisons';
 import { Slide7TimeExperiment } from './components/slides/Slide7TimeExperiment';
 import { Slide8Conclusion } from './components/slides/Slide8Conclusion';
 
-const TOTAL_SLIDES = 8;
+const TOTAL_SLIDES = 10;
 
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -87,12 +89,16 @@ function App() {
       case 3:
         return <Slide4HowLotteryWorks playSound={playSound} />;
       case 4:
-        return <Slide5BigNumbers playSound={playSound} />;
+        return <Slide4aCombinatorics playSound={playSound} />;
       case 5:
-        return <Slide6Comparisons playSound={playSound} />;
+        return <Slide4bCalculation playSound={playSound} />;
       case 6:
-        return <Slide7TimeExperiment playSound={playSound} saveExperimentResult={saveExperimentResult} />;
+        return <Slide5BigNumbers playSound={playSound} />;
       case 7:
+        return <Slide6Comparisons playSound={playSound} />;
+      case 8:
+        return <Slide7TimeExperiment playSound={playSound} saveExperimentResult={saveExperimentResult} />;
+      case 9:
         return <Slide8Conclusion playSound={playSound} onRestart={restart} />;
       default:
         return null;
