@@ -39,6 +39,8 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
 
     setIsDrawing(true);
     setShowResult(false);
+    setDrawnNumbers([]);
+    setDrawnStars([]);
     playSound('playDrumroll');
 
     const randomNumbers: number[] = [];
@@ -53,13 +55,17 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
       if (!randomStars.includes(num)) randomStars.push(num);
     }
 
+    const drawnNumbersTemp: number[] = [];
+    const drawnStarsTemp: number[] = [];
+
     let index = 0;
     const interval = setInterval(() => {
       if (index < 5) {
         setDrawnNumbers(prev => [...prev, randomNumbers[index]]);
         playSound('playPop');
       } else if (index < 7) {
-        setDrawnStars(prev => [...prev, randomStars[index - 5]]);
+        drawnStarsTemp.push(randomStars[index - 5]);
+        setDrawnStars([...drawnStarsTemp]);
         playSound('playPop');
       } else {
         clearInterval(interval);
@@ -81,6 +87,7 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
 
   const matchedNumbers = selectedNumbers.filter(n => drawnNumbers.includes(n)).length;
   const matchedStars = selectedStars.filter(n => drawnStars.includes(n)).length;
+  const isStartDisabled = selectedNumbers.length !== 5 || selectedStars.length !== 2 || isDrawing;
 
   useEffect(() => {
     if (showResult) {
@@ -166,10 +173,10 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
                         isMatch
                           ? 'bg-green-500 text-white ring-2 ring-green-300 scale-110'
                           : isSelected
-                          ? 'bg-amber-500 text-white shadow-md scale-105'
+                          ? 'bg-teal-500 text-white shadow-md scale-105'
                           : isDrawn && showResult
                           ? 'bg-orange-400 text-white'
-                          : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
                       <Star className={`w-4 h-4 ${isSelected || (isDrawn && showResult) ? 'fill-current' : ''}`} />
@@ -180,20 +187,22 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mb-4">
+            <div className="flex gap-3 mb-4">
               <button
-                onClick={startDraw}
-                disabled={selectedNumbers.length !== 5 || selectedStars.length !== 2 || isDrawing}
-                className="flex-1 py-3 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={showResult ? reset : startDraw}
+                disabled={!showResult && isStartDisabled}
+                className="flex-1 py-3 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {isDrawing ? 'Розыгрыш...' : 'Начать розыгрыш!'}
-              </button>
-              <button
-                onClick={reset}
-                className="px-4 py-3 bg-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-300 transition-all flex items-center justify-center gap-2"
-              >
-                <RotateCcw className="w-4 h-4" />
-                Сброс
+                {isDrawing ? (
+                  'Розыгрыш...'
+                ) : showResult ? (
+                  <>
+                    <RotateCcw className="w-4 h-4" />
+                    Попробовать снова!
+                  </>
+                ) : (
+                  'Начать розыгрыш!'
+                )}
               </button>
             </div>
 
