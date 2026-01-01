@@ -189,7 +189,7 @@ export function Slide4HowLotteryWorks({ playSound }: Slide4HowLotteryWorksProps)
             <div className="flex gap-3 mb-4">
               <button
                 onClick={showResult ? reset : startDraw}
-                disabled={!showResult && (selectedNumbers.length !== 5 || selectedStars.length !== 2 || isDrawing)}
+                disabled={!showResult && isStartDisabled}
                 className="flex-1 py-3 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isDrawing ? (
